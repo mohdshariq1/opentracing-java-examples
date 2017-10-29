@@ -49,6 +49,9 @@ public class HelloController {
     @RequestMapping("/chaining")
     public String chaining() {
         ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/hello", String.class);
+ ResponseEntity<String> response2 = restTemplate.getForEntity("http://localhost:8080/hello2", String.class);
+
+
         return "Chaining + " + response.getBody();
     }
     
@@ -57,10 +60,18 @@ public class HelloController {
       if (personService.isValid(person)) {
         personRepository.persist(person);
         
-        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/hello", String.class);
+        ResponseEntity<String> response1 = restTemplate.getForEntity("http://localhost:8080/hello", String.class);
        
         ResponseEntity<String> respons0 = restTemplate.getForEntity("http://localhost:8080/chaining", String.class);
-        
+       
+	PersonDTO userModel = new PersonDTO( "Mohd", "Shariq", new java.util.Date(),
+     "Software Developer", java.math.BigDecimal.ONE);
+
+ //RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setMessageConverters(Arrays.asList(new MappingJackson2HttpMessageConverter()));
+        ResponseEntity<Boolean> response = restTemplate.postForEntity("http://localhost:8080/availability",
+                userModel.getFirstName(), Boolean.class);
+        System.out.println(response.getBody()); 
         
         return ResponseEntity.status(HttpStatus.CREATED).build();
       }
@@ -83,7 +94,7 @@ public class HelloController {
 
         // a load of business logic that validates the user model
 
-        RestTemplate restTemplate = new RestTemplate();
+        //RestTemplate restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(Arrays.asList(new MappingJackson2HttpMessageConverter()));
         ResponseEntity<Boolean> response = restTemplate.postForEntity("http://localhost:8080/availability",
                 userModel.getFirstName(), Boolean.class);
