@@ -69,8 +69,8 @@ public class HelloController {
 
  //RestTemplate restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(Arrays.asList(new MappingJackson2HttpMessageConverter()));
-        ResponseEntity<Boolean> response = restTemplate.postForEntity("http://localhost:8080/availability",
-                userModel.getFirstName(), Boolean.class);
+        ResponseEntity<PersonDTO> response = restTemplate.postForEntity("http://localhost:8080/createPerson",
+                userModel, PersonDTO.class);
         System.out.println(response.getBody()); 
         
         return ResponseEntity.status(HttpStatus.CREATED).build();
