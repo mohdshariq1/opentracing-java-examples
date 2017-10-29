@@ -59,19 +59,25 @@ public class HelloController {
     public ResponseEntity<String> persistPerson(@RequestBody PersonDTO person) {
       if (personService.isValid(person)) {
         personRepository.persist(person);
+        System.out.println(".......1");
+        //ResponseEntity<String> response1 = restTemplate.getForEntity("http://localhost:8080/hello", String.class);
+        //System.out.println(".......2" + response1.toString());
         
-        ResponseEntity<String> response1 = restTemplate.getForEntity("http://localhost:8080/hello", String.class);
-       
-        ResponseEntity<String> respons0 = restTemplate.getForEntity("http://localhost:8080/chaining", String.class);
-       
+       // ResponseEntity<String> respons0 = restTemplate.getForEntity("http://localhost:8080/chaining", String.class);
+        System.out.println(".......4");
+        
 	PersonDTO userModel = new PersonDTO( "Mohd", "Shariq", new java.util.Date(),
      "Software Developer", java.math.BigDecimal.ONE);
-
+	System.out.println(".......5");
+    
  //RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setMessageConverters(Arrays.asList(new MappingJackson2HttpMessageConverter()));
-        ResponseEntity<PersonDTO> response = restTemplate.postForEntity("http://localhost:8080/createPerson",
+        
+		restTemplate.setMessageConverters(Arrays.asList(new MappingJackson2HttpMessageConverter()));
+        System.out.println(".......6");
+            ResponseEntity<PersonDTO> response = restTemplate.postForEntity("http://localhost:8080/createPerson",
                 userModel, PersonDTO.class);
         System.out.println(response.getBody()); 
+        System.out.println(".......7");
         
         return ResponseEntity.status(HttpStatus.CREATED).build();
       }
